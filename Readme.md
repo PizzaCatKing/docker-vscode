@@ -6,6 +6,9 @@ Forking this to remove the language/tool support that I will not be using
 
 Ideally this will be able to be run without needing to forward the entire home folder, and instead forwarding a workspace will be enough.
 
+Thanks to Sébastien Allamand (allamand) for creating the original
+
+
 ---
 
 The Goal of this image is to have a portable development environment.
@@ -19,14 +22,6 @@ The image contains the following software:
 - [git]() 2.7.4
 - [Emacs]() 24.5.1 + ruby 2.3.1 [ 189Mo ]
 - Cloud Foundry Client 6.12 [25Mo]
-
-[![](https://images.microbadger.com/badges/version/sebmoule/docker-vscode.svg)](http://microbadger.com/images/sebmoule/docker-vscode "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/image/sebmoule/docker-vscode.svg)](http://microbadger.com/images/sebmoule/docker-vscode "Get your own image badge on microbadger.com")
-
-[![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com/r/sebmoule/docker-vscode/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/sebmoule/docker-vscode.svg?maxAge=2592000)]()
-[![Docker Stars](https://img.shields.io/docker/stars/sebmoule/docker-vscode.svg?maxAge=2592000)]()
-
 
 ## Managing User
 
@@ -120,17 +115,6 @@ When bind-mounting you Home into the Container it will execture your `.bashrc` i
 
 ### Configuring .bashrc
 
-This Tool when bind-mounting your $HOME inside the container will  source your `HOME/.bashrc` file.
-To work properly this file must at least contains :
-
-```bash
-...
-#Add my PATH                                                                                                                                                                   
-export GOPATH=~/go                                                                                                                                                             
-PATH=$PATH:~/bin:~/.local/bin/:$GOPATH/bin/:/usr/local/go/bin/ 
-...
-```
-
 In order to know when I work inside the container or on my box, I have differentiate my bash Prompt with different colors :
 
 ```bash
@@ -143,14 +127,4 @@ In order to know when I work inside the container or on my box, I have different
             PS1="[\[\033[34m\]\u\[\033[00m\]@\[\033[32m\]\h-in-docker\[\033[00m\]: \[\033[35m\]\w\[\033[00m\]]\[\033[00m\]$"                                                   
         fi  
 ```
-
-
-# Demo
-
-
-![demo](https://github.com/sebmoule/docker-vscode/raw/master/demo.gif)
-<!-- 
-![demo](demo.gif)
-[![asciicast](https://asciinema.org/a/86284.png)](https://asciinema.org/a/86284) 
--->
 
