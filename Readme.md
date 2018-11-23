@@ -1,5 +1,13 @@
 # Go Dev Environment with VsCode
 
+## PizzaCatKing's fork
+
+Forking this to remove the language/tool support that I will not be using
+
+Ideally this will be able to be run without needing to forward the entire home folder, and instead forwarding a workspace will be enough.
+
+---
+
 The Goal of this image is to have a portable development environment.
 We ship this image with at least some of common dev tools I used
 The image contains the following software:
