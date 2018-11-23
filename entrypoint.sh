@@ -17,19 +17,12 @@ fi
 
 if [ "$1" == "vscode" ]; then
 
-    echo "Starting vscode $1, code"
-    if [ $ID = 0 ];then
-	if [ -f /home/$MYUSERNAME/.bashrc ]; then
-	    echo "there is a .bashrc we source it and launch code"
-	    su $MYUSERNAME -c "source /home/$MYUSERNAME/.bashrc && code --verbose -w"
-	else
-	    echo "there is NO .bashrc we just launch code -verbose -w"
-	    su $MYUSERNAME -c "code"
-	fi
+    echo "there is NO .bashrc we just launch code -verbose -w"
+    code --verbose -w
+
 	echo "Code a rendu la main..., we Exit"
 	#exec su $MYUSERNAME -c bash # give a bash
 #	exec bash
-    fi
 else
     echo "Starting your overrided command: exec $@"
     exec $@

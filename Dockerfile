@@ -38,7 +38,7 @@ RUN apt-get update -qq && \
   libxss1 libsecret-1-0 \
   libxkbfile1 \
   git curl tree locate net-tools telnet \
-  make bash-completion python python-pip \
+  make bash-completion \
   bash-completion \
   libxkbfile1 \
   libxss1 \
@@ -71,16 +71,16 @@ RUN echo 'Creating user: ${MYUSERNAME} wit UID $UID' && \
   curl -o vscode.deb -J -L "$VSCODE" && \
   dpkg -i vscode.deb && rm -f vscode.deb && \
   echo "Install OK"
-#USER ${MYUSERNAME}
 ENV HOME /home/${MYUSERNAME}
 ENV TERM=xterm
 
-WORKDIR /home/${MYUSERNAME}
+WORKDIR ${HOME}/workspace
 
 ADD ./entrypoint.sh /entrypoint.sh
 
 # Add Tini Init System
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini && chmod +x /entrypoint.sh
+RUN chmod a+x /tini && chmod a+x /entrypoint.sh
+USER ${MYUSERNAME}
 ENTRYPOINT ["/tini", "--", "/entrypoint.sh"]
 CMD ["vscode"]

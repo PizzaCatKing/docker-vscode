@@ -10,7 +10,6 @@ services:
     stdin_open: true
     network_mode: host
     volumes:
-      - ${HOME}:${HOME}
       - /tmp/.X11-unix:/tmp/.X11-unix
     command: vscode
-#    user: root
+    user: ${MYUSERNAME}
