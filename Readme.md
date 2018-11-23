@@ -8,24 +8,18 @@ Ideally this will be able to be run without needing to forward the entire home f
 
 Thanks to Sébastien Allamand (allamand) for creating the original
 
-
 ---
 
 The Goal of this image is to have a portable development environment.
 We ship this image with at least some of common dev tools I used
 The image contains the following software:
 
-
 - [Visual Studio Code](https://code.visualstudio.com/) [ 140 Mo ]
-  - [vscode-go](https://github.com/Microsoft/vscode-go)
-- [Go 1.6.3](https://golang.org/) [ 320Mo ]
 - [git]() 2.7.4
-- [Emacs]() 24.5.1 + ruby 2.3.1 [ 189Mo ]
-- Cloud Foundry Client 6.12 [25Mo]
 
 ## Managing User
 
-The best way to work with this tool is to bind-mount you $HOME inside the container so that you will be 
+The best way to work with this tool is to bind-mount you \$HOME inside the container so that you will be
 able to work on you file.
 I prefer not to work as root inside the container, so I will create you user inside the container at startup.
 You'll have to pass env variables `MYUSERNAME`, `MYUID` and `MYGID` so that when you edit files inside the container you'll have the sames rights as outside.
@@ -33,11 +27,13 @@ You'll have to pass env variables `MYUSERNAME`, `MYUID` and `MYGID` so that when
 ## Get Image
 
 Simply pull image from docker Hub
+
 ```
 docker pull sebmoule/docker-vscode
 ```
 
-Or build from source 
+Or build from source
+
 ```
 make build
 ```
@@ -47,7 +43,8 @@ make build
 There are 2 run Options :
 
 Running the container with user's specified inside :
-  - `make run`
+
+- `make run`
 
 which runs :
 By running the following command you'll be able to start the container.
@@ -71,16 +68,14 @@ alias vscode='docker rm vscode || true ; \
     sebmoule/docker-vscode'
 ```
 
->with this alias, I remove and Recreate my container If not running.
->If my container vscode is already running, then it won't delete it neither create another one.
->I can just enter the container and start working.
-
-
+> with this alias, I remove and Recreate my container If not running.
+> If my container vscode is already running, then it won't delete it neither create another one.
+> I can just enter the container and start working.
 
 Explain Parameters :
 
 - Make Graphical application Works : share DISPLAY, X11 socket en local network
-  - `--net="host"` 
+  - `--net="host"`
   - `-e $DISPLAY`
   - `-v /tmp/.X11-unix:/tmp/.X11-unix`
 - Gives Home access and Create your own user inside the container :
@@ -89,14 +84,12 @@ Explain Parameters :
   - `-e MYUSERNAME=$(id -un)` create user with you username
   - `-v ${HOME}:${HOME}` We bind-mount our `HOME` so that we can works with our files and access at least to :
     - `~/.bashrc ~/.Xauthority ~/.local/ .ssh ~/.gconf ~/.npm ~/.config/Code ~/.vscode` ...
-    - If you do so and bind-mount your home, your .bashrc Profile **MUST** set `GOPATH` and `PATH` so that it can resolve on `/usr/local/go/bin`.	
+    - If you do so and bind-mount your home, your .bashrc Profile **MUST** set `GOPATH` and `PATH` so that it can resolve on `/usr/local/go/bin`.
     - that also mount the vscode preference directories `.config` and `.vscode`
-  - `-w $HOME` set working directory to $HOME or whatever you like (your $GOPATH..)
+  - `-w $HOME` set working directory to $HOME or whatever you like (your$GOPATH..)
 - Gives access to your SSH-Agent (for ssh keys to connect to servers, git...)
   - `-e SSH_AUTH_SOCK=$SSH_AUTH_SOCK`
   - `-v $(dirname $SSH_AUTH_SOCK):$(dirname $SSH_AUTH_SOCK)`
-
-
 
 ### Entrypoint
 
@@ -108,8 +101,8 @@ The command will do the following:
 - Create the user according to `MYUID` `MYGID` and `MYUSERNAME`
 - save the IDE preferences into `<your-HOME-dir>/.vscode`
 - mounts the `GOPATH` from your computer to the one in the container. This
-assumes you have a single directory. If you have multiple directories in your
-GOPATH, then see below how you can customize this to run correctly.
+  assumes you have a single directory. If you have multiple directories in your
+  GOPATH, then see below how you can customize this to run correctly.
 
 When bind-mounting you Home into the Container it will execture your `.bashrc` inside the container.
 
@@ -118,13 +111,12 @@ When bind-mounting you Home into the Container it will execture your `.bashrc` i
 In order to know when I work inside the container or on my box, I have differentiate my bash Prompt with different colors :
 
 ```bash
-       # If we have MYUSERNAME we are in Docker                                                                                                                               
-        if [ -z "$MYUSERNAME" ]; then                                                                                                                                          
-            #I am on my box                                                                                                                                                    
-            PS1="[\[\033[31m\]\u\[\033[00m\]@\[\033[35m\]\h\[\033[00m\]: \[\033[34m\]\w\[\033[00m\]]\[\033[00m\]$"                                                             
-        else                                                                                                                                                                   
-            #I am in the container                                                                                                                                             
-            PS1="[\[\033[34m\]\u\[\033[00m\]@\[\033[32m\]\h-in-docker\[\033[00m\]: \[\033[35m\]\w\[\033[00m\]]\[\033[00m\]$"                                                   
-        fi  
+       # If we have MYUSERNAME we are in Docker
+        if [ -z "$MYUSERNAME" ]; then
+            #I am on my box
+            PS1="[\[\033[31m\]\u\[\033[00m\]@\[\033[35m\]\h\[\033[00m\]: \[\033[34m\]\w\[\033[00m\]]\[\033[00m\]$"
+        else
+            #I am in the container
+            PS1="[\[\033[34m\]\u\[\033[00m\]@\[\033[32m\]\h-in-docker\[\033[00m\]: \[\033[35m\]\w\[\033[00m\]]\[\033[00m\]$"
+        fi
 ```
-

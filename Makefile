@@ -18,12 +18,12 @@ build:
 	--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` --rm -t sebmoule/$(NAME) \
 		.
 
-rerun: 
+rerun:
 	docker stop $(NAME) || true
 	docker rm $(NAME) || true
 	make -s run
 
-run:	
+run:
 	docker run -dti \
 	--net="host" \
 	--name=vscode \
@@ -36,8 +36,6 @@ run:
 	-v ${shell dirname ${SSH_AUTH_SOCK}}:${shell dirname ${SSH_AUTH_SOCK}} \
 	-v /tmp/.X11-unix:/tmp/.X11-unix \
 	-v ${HOME}:${HOME} \
-	-w /mnt/filer/work \
-	-v /mnt/filer/work:/mnt/filer/work \
 	sebmoule/$(NAME) $(ARGS)
 
 
@@ -45,7 +43,7 @@ run:
 #########################
 #tests
 
-#Build withlocal user inside the image docker 
+#Build withlocal user inside the image docker
 build-user:
 	echo 'This will take a lot of time...'
 	docker build --rm -t sebmoule/$(NAME)-${USER} \
@@ -65,7 +63,6 @@ run-user:
            -e DISPLAY=${DISPLAY} \
            -v /tmp/.X11-unix:/tmp/.X11-unix \
            -v ${HOME}:${HOME} \
-           -v /mnt/filer/work:/mnt/filer/work \
            sebmoule/$(NAME)-${USER} bash
 
 
@@ -76,5 +73,4 @@ run-user:
 install:
 	curl -o vscode.deb -J -L https://vscode-update.azurewebsites.net/latest/linux-deb-x64/stable
 	sudo dpkg -i vscode.deb
-	rm -f vscode.deb 
-
+	rm -f vscode.deb
